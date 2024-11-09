@@ -1,7 +1,6 @@
 import os
-from flask import Flask, redirect, request, jsonify, url_for
-from app.oauth import OAuthIntegration
-from app.models import OAuthToken
+from flask import Flask, request, jsonify, url_for
+from oauth import OAuthIntegration
 from dotenv import load_dotenv
 
 # Load environment variables

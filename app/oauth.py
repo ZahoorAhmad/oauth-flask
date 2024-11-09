@@ -1,9 +1,7 @@
 import os
 from dotenv import load_dotenv
-import requests
 from flask_oauthlib.client import OAuth
-from app.models import OAuthToken
-
+from models import OAuthToken
 # Load environment variables from .env file
 load_dotenv()
 

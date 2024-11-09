@@ -4,3 +4,5 @@ requests
 python-dotenv
 redis
 requests_oauthlib
+werkzeug==2.0.3
+pydantic
