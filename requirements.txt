@@ -1,0 +1,6 @@
+Flask
+Flask-OAuthlib
+requests
+python-dotenv
+redis
+requests_oauthlib
