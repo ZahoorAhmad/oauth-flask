@@ -149,7 +149,3 @@ If you'd like to contribute to this project, feel free to submit pull requests. 
     Follow Python and Flask best practices.
     Add tests for new features or bug fixes.
     Provide clear commit messages.
-
-License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
