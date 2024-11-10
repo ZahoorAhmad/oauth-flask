@@ -59,6 +59,7 @@ IBM_REDIRECT_URI=http://localhost:5000/callback/ibm
 IBM_DISCOVERY_URL=https://iam.cloud.ibm.com/identity/.well-known/openid-configuration
 
 SECRET_KEY=your_flask_secret_key
+
 ***NOTE*** = You can set all or any of the env at a time, depending on your requirements and you can skip SECRET_KEY if you don't want but recommended for security concern
 
 ### 3. Install dependencies
