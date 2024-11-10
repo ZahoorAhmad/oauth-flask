@@ -9,19 +9,23 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "default_secret_key")
 
+
+providers = ["google", "github", "microsoft", "wc"]
+
 # OAuth callback route for Google, Microsoft, GitHub, etc.
 @app.route("/login/<provider>")
 def login(provider):
-    if provider not in ["google", "github", "microsoft"]:
+    if provider not in providers:
         return jsonify({"error": "Invalid provider"}), 400
 
     oauth_integration = OAuthIntegration(provider)
     oauth_session = oauth_integration.get_oauth_session(app)
     return oauth_session.authorize(callback=url_for('authorized', provider=provider, _external=True))
 
+
 @app.route("/callback/<provider>")
 def authorized(provider):
-    if provider not in ["google", "github", "microsoft"]:
+    if provider not in providers:
         return jsonify({"error": "Invalid provider"}), 400
 
     oauth_integration = OAuthIntegration(provider)
@@ -36,6 +40,7 @@ def authorized(provider):
         "expires_in": oauth_token.expires_in
     })
 
+
 # Example route for getting user info (expand as needed)
 @app.route("/user/<provider>")
 def user_info(provider):
@@ -43,7 +48,7 @@ def user_info(provider):
     if not token:
         return jsonify({"error": "Access token is required"}), 400
 
-    if provider not in ['google', 'github', 'microsoft']:
+    if provider not in providers:
         return jsonify({"error": "Invalid provider"}), 400
 
     oauth_integration = OAuthIntegration(provider)
@@ -52,16 +57,8 @@ def user_info(provider):
     # Set the tokengetter to properly fetch the access token
     oauth_session.tokengetter(lambda: {"access_token": token})
 
-    # Fetch user info based on the provider
-    if provider == "google":
-        user_info_url = "https://www.googleapis.com/oauth2/v1/userinfo"
-    elif provider == "github":
-        user_info_url = "https://api.github.com/user"
-    elif provider == "microsoft":
-        user_info_url = "https://graph.microsoft.com/v1.0/me"
-
     # Request user info from the provider
-    user_info_response = oauth_session.get(user_info_url)
+    user_info_response = oauth_session.get(oauth_integration.get_user_info_url(provider))
 
     # Check if the response is successful
     if user_info_response.status != 200:
@@ -71,3 +68,4 @@ def user_info(provider):
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)
+
