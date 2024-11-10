@@ -15,6 +15,15 @@ OAUTH_PROVIDERS = {
         "authorize_url":"https://accounts.google.com/o/oauth2/auth",
         "redirect_uri": os.getenv("GOOGLE_REDIRECT_URI"),
     },
+    "wc": {
+        "client_id": os.getenv("WC_CLIENT_ID"),
+        "client_secret": os.getenv("WC_CLIENT_SECRET"),
+        "authorization_endpoint": f"{os.getenv('WC_PROVIDER_INSTANCE')}oauth2/auth",
+        "token_endpoint": f"{os.getenv('WC_PROVIDER_INSTANCE')}oauth2/token",
+        "issuer": os.getenv('WC_PROVIDER_INSTANCE'),
+        "redirect_uri": os.getenv("WC_REDIRECT_URI"),
+
+    },
     "github": {
         "client_id": os.getenv("GITHUB_CLIENT_ID"),
         "client_secret": os.getenv("GITHUB_CLIENT_SECRET"),
@@ -36,10 +45,11 @@ class OAuthIntegration:
         self.provider_name = provider_name
         self.client_id = OAUTH_PROVIDERS[provider_name]["client_id"]
         self.client_secret = OAUTH_PROVIDERS[provider_name]["client_secret"]
-        self.authorization_base_url = OAUTH_PROVIDERS[provider_name]["authorization_base_url"]
-        self.token_url = OAUTH_PROVIDERS[provider_name]["token_url"]
-        self.authorize_url = OAUTH_PROVIDERS[provider_name]["authorize_url"]
+        self.authorization_base_url = OAUTH_PROVIDERS[provider_name].get("authorization_base_url", "")
+        self.token_url = OAUTH_PROVIDERS[provider_name].get("token_url", "")
+        self.authorize_url = OAUTH_PROVIDERS[provider_name].get("authorize_url", "")
         self.redirect_uri = OAUTH_PROVIDERS[provider_name]["redirect_uri"]
+        self.issuer = OAUTH_PROVIDERS[provider_name].get("issuer", "")
 
     def get_oauth_session(self, app):
         """
@@ -69,3 +79,15 @@ class OAuthIntegration:
             raise ValueError("Invalid OAuth response")
         token = response
         return OAuthToken(access_token=token['access_token'], token_type=token['token_type'], expires_in=token['expires_in'])
+
+    def get_user_info_url(self, provider):
+        if provider == "google":
+            return "https://www.googleapis.com/oauth2/v1/userinfo"
+        elif provider == "wc":
+            return self.issuer
+        elif provider == "github":
+            return "https://api.github.com/user"
+        elif provider == "microsoft":
+            return "https://graph.microsoft.com/v1.0/me"
+        return None
+
