@@ -1,6 +1,6 @@
 # OAuth Integration with Flask
 
-This repository provides a simple OAuth integration for various providers like **Google**, **GitHub**, **Microsoft**, and more using the **Flask** framework. The application allows users to authenticate via these providers and manage OAuth tokens efficiently.
+This repository provides a simple OAuth integration for various providers like **Google**, **GitHub**, **Microsoft**, **IBM**, **WC** and more using the **Flask** framework. The application allows users to authenticate via these providers and manage OAuth tokens efficiently.
 
 The project also includes a Dockerized setup using **Docker Compose** with **Redis** for session management.
 
@@ -101,7 +101,7 @@ http://localhost:5000/login/google
 After the user authenticates, they will be redirected to the callback URL you defined in the .env file.
 2. OAuth Callback
 
-Handles the callback from the OAuth provider, exchanges the authorization code for an access token:
+Handles the callback from the OAuth provider, and exchanges the authorization code for an access token:
 
     Google: /callback/google
     GitHub: /callback/github
@@ -124,6 +124,13 @@ Fetches user information from the provider after authentication:
     Google: /user/google
     GitHub: /user/github
     Microsoft: /user/microsoft
+    IBM: /user/ibm
+    WC: /user/wc
+    ............
+    ............
+    ............
+    ABC: /user/abc
+
 
 Example:
 
