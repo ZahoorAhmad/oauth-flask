@@ -14,6 +14,7 @@ OAUTH_PROVIDERS = {
         "token_url": "https://accounts.google.com/o/oauth2/token",
         "authorize_url":"https://accounts.google.com/o/oauth2/auth",
         "redirect_uri": os.getenv("GOOGLE_REDIRECT_URI"),
+        "discovery_url": os.getenv("GOOGLE_DISCOVERY_URL"),
     },
     "wc": {
         "client_id": os.getenv("WC_CLIENT_ID"),
@@ -22,7 +23,7 @@ OAUTH_PROVIDERS = {
         "token_endpoint": f"{os.getenv('WC_PROVIDER_INSTANCE')}oauth2/token",
         "issuer": os.getenv('WC_PROVIDER_INSTANCE'),
         "redirect_uri": os.getenv("WC_REDIRECT_URI"),
-
+        "discovery_url": os.getenv("WC_DISCOVERY_URL"),
     },
     "github": {
         "client_id": os.getenv("GITHUB_CLIENT_ID"),
@@ -30,6 +31,7 @@ OAUTH_PROVIDERS = {
         "authorization_base_url": "https://github.com/login/oauth/authorize",
         "token_url": "https://github.com/login/oauth/access_token",
         "redirect_uri": os.getenv("GITHUB_REDIRECT_URI"),
+        "discovery_url": os.getenv("GITHUB_DISCOVERY_URL"),
     },
     "microsoft": {
         "client_id": os.getenv("MICROSOFT_CLIENT_ID"),
@@ -37,6 +39,7 @@ OAUTH_PROVIDERS = {
         "authorization_base_url": "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
         "token_url": "https://login.microsoftonline.com/common/oauth2/v2.0/token",
         "redirect_uri": os.getenv("MICROSOFT_REDIRECT_URI"),
+        "discovery_url": os.getenv("MICROSOFT_DISCOVERY_URL"),
     },
 }
 

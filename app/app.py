@@ -10,7 +10,7 @@ app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "default_secret_key")
 
 
-providers = ["google", "github", "microsoft", "wc"]
+providers = ["google", "github", "microsoft", "wc", "ibm"]
 
 # OAuth callback route for Google, Microsoft, GitHub, etc.
 @app.route("/login/<provider>")
