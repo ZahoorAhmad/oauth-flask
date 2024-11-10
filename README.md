@@ -31,18 +31,32 @@ cd oauth-flask
 
 Create a .env file in the root of the project directory and add the following environment variables. These will be used by the Flask app for OAuth integration:
 
-
 GOOGLE_CLIENT_ID=your_google_client_id
 GOOGLE_CLIENT_SECRET=your_google_client_secret
 GOOGLE_REDIRECT_URI=http://localhost:5000/callback/google
+GOOGLE_DISCOVERY_URL=https://accounts.google.com/.well-known/openid-configuration
+
+WC_CLIENT_ID=your_wc_client_id
+WC_CLIENT_SECRET=your_wc_client_secret
+WC_REDIRECT_URI=http://localhost:5000/callback/wc
+WC_DISCOVERY_URL=https://accounts.wanclouds.net/.well-known/openid-configuration
+
 
 GITHUB_CLIENT_ID=your_github_client_id
 GITHUB_CLIENT_SECRET=your_github_client_secret
 GITHUB_REDIRECT_URI=http://localhost:5000/callback/github
+GITHUB_DISCOVERY_URL=https://login.microsoftonline.com/common/.well-known/openid-configuration
+
 
 MICROSOFT_CLIENT_ID=your_microsoft_client_id
 MICROSOFT_CLIENT_SECRET=your_microsoft_client_secret
 MICROSOFT_REDIRECT_URI=http://localhost:5000/callback/microsoft
+MICROSOFT_DISCOVERY_URL=https://login.microsoftonline.com/common/.well-known/openid-configuration
+
+IBM_CLIENT_ID=your_ibm_client_id
+IBM_CLIENT_SECRET=your_ibm_client_secret
+IBM_REDIRECT_URI=http://localhost:5000/callback/ibm
+IBM_DISCOVERY_URL=https://iam.cloud.ibm.com/identity/.well-known/openid-configuration
 
 SECRET_KEY=your_flask_secret_key
 
@@ -73,6 +87,12 @@ Redirects to the OAuth provider's login page:
     Google: /login/google
     GitHub: /login/github
     Microsoft: /login/microsoft
+    IBM: /login/ibm
+    WC: /login/wc
+    ............
+    ............
+    ............
+    ABC: /login/abc
 
 Example:
 
@@ -86,6 +106,12 @@ Handles the callback from the OAuth provider, exchanges the authorization code f
     Google: /callback/google
     GitHub: /callback/github
     Microsoft: /callback/microsoft
+    IBM: /callback/ibm
+    WC: /callback/wc
+    ............
+    ............
+    ............
+    ABC: /callback/abc
 
 Example:
 
@@ -124,6 +150,8 @@ The project supports the following OAuth providers:
     Google
     GitHub
     Microsoft
+    IBM
+    WC
 
 To add more providers, simply:
 
