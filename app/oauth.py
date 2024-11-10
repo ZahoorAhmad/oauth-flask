@@ -12,6 +12,7 @@ OAUTH_PROVIDERS = {
         "client_secret": os.getenv("GOOGLE_CLIENT_SECRET"),
         "authorization_base_url": "https://accounts.google.com/o/oauth2/auth",
         "token_url": "https://accounts.google.com/o/oauth2/token",
+        "authorize_url":"https://accounts.google.com/o/oauth2/auth",
         "redirect_uri": os.getenv("GOOGLE_REDIRECT_URI"),
     },
     "github": {
@@ -37,6 +38,7 @@ class OAuthIntegration:
         self.client_secret = OAUTH_PROVIDERS[provider_name]["client_secret"]
         self.authorization_base_url = OAUTH_PROVIDERS[provider_name]["authorization_base_url"]
         self.token_url = OAUTH_PROVIDERS[provider_name]["token_url"]
+        self.authorize_url = OAUTH_PROVIDERS[provider_name]["authorize_url"]
         self.redirect_uri = OAUTH_PROVIDERS[provider_name]["redirect_uri"]
 
     def get_oauth_session(self, app):
@@ -48,7 +50,7 @@ class OAuthIntegration:
             self.provider_name,
             consumer_key=self.client_id,
             consumer_secret=self.client_secret,
-            request_token_params={"scope": "email"},
+            request_token_params={"scope": "openid profile email"},
             base_url=self.authorization_base_url,
             request_token_url=None,
             access_token_method="POST",

@@ -48,7 +48,9 @@ def user_info(provider):
 
     oauth_integration = OAuthIntegration(provider)
     oauth_session = oauth_integration.get_oauth_session(app)
-    oauth_session.token = {"access_token": token}
+
+    # Set the tokengetter to properly fetch the access token
+    oauth_session.tokengetter(lambda: {"access_token": token})
 
     # Fetch user info based on the provider
     if provider == "google":
@@ -58,11 +60,14 @@ def user_info(provider):
     elif provider == "microsoft":
         user_info_url = "https://graph.microsoft.com/v1.0/me"
 
+    # Request user info from the provider
     user_info_response = oauth_session.get(user_info_url)
-    if user_info_response.status_code != 200:
-        return jsonify({"error": "Failed to fetch user info"}), 400
 
-    return jsonify(user_info_response.json())
+    # Check if the response is successful
+    if user_info_response.status != 200:
+        return jsonify({"error": "Failed to fetch user info"}), 400
+    return jsonify(user_info_response.data)
+
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)
