@@ -1,10 +1,10 @@
 import os
+
 import requests
 from dotenv import load_dotenv
-from flask_oauthlib.client import OAuth
-from models import OAuthToken
 
-# Load environment variables from .env file
+from app import OAuthToken
+
 load_dotenv()
 
 # OAuth provider client credentials
@@ -73,6 +73,7 @@ class OAuthIntegration:
         """
         Create and return an OAuth session object for the provider.
         """
+        from flask_oauthlib.client import OAuth
         oauth = OAuth(app)
         oauth_session = oauth.remote_app(
             self.provider_name,
@@ -109,3 +110,28 @@ class OAuthIntegration:
         elif provider == "microsoft":
             return "https://graph.microsoft.com/v1.0/me"
         return None
+
+    def refresh_token(self, refresh_token):
+        """Refresh the OAuth token using the refresh token."""
+
+        # Fetch the provider configuration from the environment
+        config = OAUTH_PROVIDERS[self.provider_name]
+
+        payload = {
+            "grant_type": "refresh_token",
+            "client_id": config["client_id"],
+            "client_secret": config["client_secret"],
+            "refresh_token": refresh_token,
+        }
+
+        response = requests.post(self.token_url, data=payload)
+
+        if response.status_code != 200:
+            raise Exception(f"Failed to refresh token for {self.provider_name}: {response.text}")
+
+        data = response.json()
+        return OAuthToken(
+            access_token=data["access_token"],
+            refresh_token=data.get("refresh_token", refresh_token),
+            expires_in=data["expires_in"]
+        )
