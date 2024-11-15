@@ -1,10 +1,40 @@
 version: '3.8'
 
 services:
-  app:
+  db:
+    image: postgres:13
+    container_name: oauth-flask-db
+    environment:
+      POSTGRES_USER: oauthUser
+      POSTGRES_PASSWORD: oauthPassword123
+      POSTGRES_DB: oauthdb
+    volumes:
+      - oauth-flask-db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - oauth-flask-network
+
+  web:
     build: .
-    container_name: oauth_app
+    container_name: oauth-flask-web
+    environment:
+      - FLASK_APP=app
+      - FLASK_ENV=development
+      - DATABASE_URL=postgresql://oauthUser:oauthPassword123@db:5432/oauthdb
     ports:
       - "5000:5000"
-    environment:
-      - REDIS_HOST=redis
+    depends_on:
+      - db
+    networks:
+      - oauth-flask-network
+    volumes:
+      - ./app:/app
+    restart: always
+
+networks:
+  oauth-flask-network:
+    driver: bridge
+
+volumes:
+  oauth-flask-db-data:  # Named volume for database persistence
